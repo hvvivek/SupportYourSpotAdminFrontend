@@ -132,13 +132,13 @@ class AdminAccount extends Component
     beginGoogleOath = (e) =>
     {
         console.log(process.env.REACT_APP_API_ENDPOINT)
-        axios.get(process.env.REACT_APP_API_ENDPOINT + "auth_url").then(response =>
-            {
-                if(response.status)
-                {
-                    window.location = response.data.url
-                }
-            })
+        // axios.get(process.env.REACT_APP_API_ENDPOINT + "auth_url").then(response =>
+        //     {
+        //         if(response.status)
+        //         {
+        //             window.location = response.data.url
+        //         }
+        //     })
         e.preventDefault()
     }
 
