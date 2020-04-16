@@ -81,6 +81,8 @@ class AdminAccount extends Component
         const RANGE = process.env.REACT_APP_GOOGLE_SHEETS_TEMPLATE_RANGE
         //TODO: Pass tokens and spreadsheet ID to get data
         let totalInsertedOrUpdated = 0
+        console.log(process.env.REACT_APP_API_ENDPOINT + "data")
+        console.log(this.state.auth_tokens)
         axios.get(process.env.REACT_APP_API_ENDPOINT + "data", {params: {tokens: this.state.auth_tokens, spreadsheet_id: SPREADSHEET_ID, spreadsheet_range: RANGE}}).then(async (response) =>
         {
             console.log(response)
