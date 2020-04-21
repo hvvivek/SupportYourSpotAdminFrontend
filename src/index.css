@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: 'Sofia-pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -10,4 +10,93 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.center-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+}
+
+
+.central-wrapper
+{
+  padding: 3rem;
+  border: 1px solid #ccc;
+  border-radius: 1rem;
+}
+
+.central-wrapper h1
+{
+  margin: 1rem;
+  margin-bottom: 2rem;
+}
+
+.central-wrapper h5
+{
+  margin: 1rem;
+  margin-bottom: 2rem;
+}
+
+.central-wrapper input[type="text"]
+{
+  margin-bottom: 1rem;
+  outline: none;
+  border: none;
+  border-bottom: 2px solid black;
+  border-radius: 0rem;
+  font-size: 1.3rem;
+  text-align: center;
+
+}
+
+
+.central-wrapper .btn
+{
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.central-wrapper .green
+{
+  background-color: green;
+  height: 1.5rem;
+}
+
+.central-wrapper .status
+{
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+
+.central-wrapper .yellow
+{
+  font-size: 0.9rem;
+  background-color: #ffc107 ;
+  height: 1.5rem;
+}
+
+
+.central-wrapper .red
+{
+  font-size: 0.9rem;
+  background-color: red;
+  height: 1.5rem;
+}
+
+.profile_pic
+{
+  border-radius: 100%;
+  overflow: hidden;
+}
+
+.progressBar
+{
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }

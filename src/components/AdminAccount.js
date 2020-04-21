@@ -4,6 +4,7 @@ import {withRouter} from 'react-router-dom'
 import qs from 'qs'
 import axios from 'axios'
 import DataTable from './DataTable'
+import verified from '../images/verified.png'
 
 class AdminAccount extends Component
 {
@@ -58,10 +59,13 @@ class AdminAccount extends Component
     {
         axios.get(process.env.REACT_APP_API_ENDPOINT + "user_info", {params: {tokens: this.state.auth_tokens}}).then(async (response) =>
         {
-            this.setState({user_info: response.data.user.data})
-            axios.get(process.env.REACT_APP_API_ENDPOINT + "admin", {params: {email: response.data.user.data.email}}).then(async (response) => {
-                this.setState({admin_info: response.data.admin})
-            })
+            if(response.data && response.data.user)
+            {
+                this.setState({user_info: response.data.user.data})
+                axios.get(process.env.REACT_APP_API_ENDPOINT + "admin", {params: {email: response.data.user.data.email}}).then(async (response) => {
+                    this.setState({admin_info: response.data.admin})
+                })
+            }
         })    
     }
 
@@ -89,7 +93,7 @@ class AdminAccount extends Component
 
             let records = response.data.data.values
             let column_names = records.shift()
-            this.setState({recordsToSync: records.length})
+            this.setState({recordsToSync: records.length, uploadingData: true})
             for(let i=0; i<records.length; i++)
             {
                 let data = []
@@ -119,8 +123,9 @@ class AdminAccount extends Component
                     let result = {totalFailures: this.state.totalFailures + 1}
                     this.setState({...result})
                 }
-
             }
+            this.setState({recordsToSync: 0})
+
         })
 
         
@@ -146,40 +151,76 @@ class AdminAccount extends Component
 
     render()
     {
-        return (
+        return (<div  className="center-screen">
             <Container>
                 <Row>
-                    <Col>
-                        <Button onClick={this.beginGoogleOath}>Connect Google Account</Button>
-                        {this.state.auth_tokens && <p>Verified - Account Connected</p>}
-                    </Col>
-                    {this.state.auth_tokens && <Col>
-                        <Form.Control type="text" name="google_sheets_link" value={this.state.google_sheets_link} placeholder="Paste Link to Google Sheets" onChange={this.onChange}></Form.Control>
-                        <Button onClick={this.getData}>Sync</Button>    
-                        {/* <Button onClick={this.getUserInfo}>Get user info</Button>     */}
+                    <Col xs={12} lg={{span:6, offset:3}} className="central-wrapper">
+                        <Col>
+                            <h1>Welcome {this.state.admin_info && this.state.admin_info.name}{this.state.auth_tokens && <img src={verified} height={25}></img>}</h1>
+                            {!this.state.auth_tokens && <p>If you are an admin, please login using your Google account to continue</p>}
+                            {!this.state.auth_tokens && <p>If you are not an admin, please contact Jake or Vivek</p>}
 
-                    </Col>}
-                    {this.state.data && <DataTable rows={this.state.data}></DataTable>}
-                    {this.state.auth_tokens && <p style={{color: "green"}}>Total number of inserts: {this.state.totalInserts}</p>}
-                    {this.state.auth_tokens && <p style={{color: "yellow"}}>Total number of updates: {this.state.totalUpdates}</p>}
-                    {this.state.auth_tokens && <p style={{color: "red"}}>Total number of failures: {this.state.totalFailures}</p>}
-                    <Col>
-                    {this.state.auth_tokens && this.state.recordsToSync>0 && <ProgressBar>
-                        <ProgressBar striped variant="success" now={(100/this.state.recordsToSync)*this.state.totalInserts} key={1} />
-                        <ProgressBar variant="warning" now={(100/this.state.recordsToSync)*this.state.totalUpdates} key={2} />
-                        <ProgressBar striped variant="danger" now={(100/this.state.recordsToSync)*this.state.totalFailures} key={3} />
-                    </ProgressBar>
-                    }
-                    </Col>
-                    {this.state.user_info && 
-                    <Col>
-                        <p>Email: {this.state.user_info.email}</p>
-                        <Image src={this.state.user_info.picture}></Image>
-                    </Col>}
+                            {!this.state.auth_tokens && <Button variant="dark" onClick={this.beginGoogleOath}>Connect Google Account</Button>}
+                            {this.state.user_info && 
+                            <Col>
+                                <Row>
+                                    <Col xs={{span:6, offset:3}} lg={{span:4, offset: 4}} >
+                                        <Image src={this.state.user_info.picture} fluid className="profile_pic"></Image>
+                                    </Col>
+                                    <Col xs={12} lg={12}>
+                                        <h5>{this.state.user_info.email}</h5>
+                                    </Col>
+                                </Row>
 
+                            </Col>}    
+                        </Col>
+                        {this.state.auth_tokens && this.state.recordsToSync == 0 && <Col>
+                            <Form.Control type="text" name="google_sheets_link" value={this.state.google_sheets_link} placeholder="Paste Link to Google Sheets" onChange={this.onChange}></Form.Control>
+                            <Button variant="dark" onClick={this.getData}>Sync my Data</Button>    
+                            {/* <Button onClick={this.getUserInfo}>Get user info</Button>     */}
+
+                        </Col>}
+                        {this.state.data && <DataTable rows={this.state.data}></DataTable>}
+                        {this.state.uploadingData && <Col className="status">
+                            <Row>
+                                <Col>
+                                    <Row>
+                                        <Col xs={1} className="green"></Col>
+                                        <Col>Inserted: {this.state.totalInserts}</Col>
+                                    </Row>
+                                </Col>
+
+                                <Col>
+                                    <Row>
+                                        <Col xs={1} className="yellow"></Col>
+                                        <Col>Updated: {this.state.totalUpdates}</Col>
+                                    </Row>
+                                </Col>
+
+                                <Col>
+                                    <Row>
+                                        <Col xs={1} className="red"></Col>
+                                        <Col>Failed: {this.state.totalFailures}</Col>
+                                    </Row>
+                                </Col>
+                            </Row>
+                        </Col>}
+                        {/* {this.state.auth_tokens && <p style={{color: "green"}}>Total number of inserts: {this.state.totalInserts}</p>}
+                        {this.state.auth_tokens && <p style={{color: "yellow"}}>Total number of updates: {this.state.totalUpdates}</p>}
+                        {this.state.auth_tokens && <p style={{color: "red"}}>Total number of failures: {this.state.totalFailures}</p>} */}
+                        <Col style={{"padding": "0px"}}>
+                        {this.state.auth_tokens && this.state.uploadingData && <ProgressBar className="progressBar">
+                            <ProgressBar striped variant="success" now={(100/this.state.recordsToSync)*this.state.totalInserts} key={1} />
+                            <ProgressBar variant="warning" now={(100/this.state.recordsToSync)*this.state.totalUpdates} key={2} />
+                            <ProgressBar striped variant="danger" now={(100/this.state.recordsToSync)*this.state.totalFailures} key={3} />
+                        </ProgressBar>
+                        }
+                        </Col>
+                        
+                    </Col>
 
                 </Row>
-            </Container>
+            </Container></div>
         )
     }
 }
