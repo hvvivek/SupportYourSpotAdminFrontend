@@ -82,7 +82,7 @@ class AdminAccount extends Component
         }
         console.log(SPLIT_SPREADSHEET_LINK)
         //TODO: Create Range const
-        const RANGE = process.env.REACT_APP_GOOGLE_SHEETS_TEMPLATE_RANGE
+        const RANGE = this.state.google_sheets_range
         //TODO: Pass tokens and spreadsheet ID to get data
         let totalInsertedOrUpdated = 0
         console.log(process.env.REACT_APP_API_ENDPOINT + "data")
@@ -93,7 +93,7 @@ class AdminAccount extends Component
 
             let records = response.data.data.values
             let column_names = records.shift()
-            this.setState({recordsToSync: records.length, uploadingData: true})
+            this.setState({recordsToSync: records.length, uploadingData: true, totalInserts: 0, totalUpdates: 0, totalFailures: 0})
             for(let i=0; i<records.length; i++)
             {
                 let data = []
@@ -176,6 +176,7 @@ class AdminAccount extends Component
                         </Col>
                         {this.state.auth_tokens && this.state.recordsToSync == 0 && <Col>
                             <Form.Control type="text" name="google_sheets_link" value={this.state.google_sheets_link} placeholder="Paste Link to Google Sheets" onChange={this.onChange}></Form.Control>
+                            <Form.Control type="text" name="google_sheets_range" value={this.state.google_sheets_range} placeholder="What is the range of cells to sync? Ex: MASTER LIST!A:L" onChange={this.onChange}></Form.Control>
                             <Button variant="dark" onClick={this.getData}>Sync my Data</Button>    
                             {/* <Button onClick={this.getUserInfo}>Get user info</Button>     */}
 

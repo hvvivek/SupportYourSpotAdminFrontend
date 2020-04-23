@@ -15,7 +15,7 @@ function App() {
 
 
       <Router path="/">
-        <p>Home Page - Under Construction</p>
+        <AdminAccount></AdminAccount>
       </Router>
     </Switch>
   </Router>
