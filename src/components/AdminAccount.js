@@ -176,7 +176,7 @@ class AdminAccount extends Component
                         </Col>
                         {this.state.auth_tokens && this.state.recordsToSync == 0 && <Col>
                             <Form.Control type="text" name="google_sheets_link" value={this.state.google_sheets_link} placeholder="Paste Link to Google Sheets" onChange={this.onChange}></Form.Control>
-                            <Form.Control type="text" name="google_sheets_range" value={this.state.google_sheets_range} placeholder="What is the range of cells to sync? Ex: MASTER LIST!A:L" onChange={this.onChange}></Form.Control>
+                            <Form.Control type="text" name="google_sheets_range" value={this.state.google_sheets_range} placeholder="Range of cells Ex: MASTER LIST!A:L" onChange={this.onChange}></Form.Control>
                             <Button variant="dark" onClick={this.getData}>Sync my Data</Button>    
                             {/* <Button onClick={this.getUserInfo}>Get user info</Button>     */}
 
