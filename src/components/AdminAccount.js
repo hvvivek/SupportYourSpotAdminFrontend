@@ -178,6 +178,10 @@ class AdminAccount extends Component
                             <Form.Control type="text" name="google_sheets_link" value={this.state.google_sheets_link} placeholder="Paste Link to Google Sheets" onChange={this.onChange}></Form.Control>
                             <Form.Control type="text" name="google_sheets_range" value={this.state.google_sheets_range} placeholder="Range of cells Ex: MASTER LIST!A:L" onChange={this.onChange}></Form.Control>
                             <Button variant="dark" onClick={this.getData}>Sync my Data</Button>    
+                            
+                            <Col>
+                                <a href="https://www.supportyourspot.com/admin">See all data</a>
+                            </Col>
                             {/* <Button onClick={this.getUserInfo}>Get user info</Button>     */}
 
                         </Col>}
